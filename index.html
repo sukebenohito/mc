@@ -2,6 +2,7 @@
 	<head>
 		<title>Multichat[?]</title>
 		<script>
+			//original code from https://2pichubros.com/
 			//10 digits
 			baseIndex = 0;
 			defaultSettings = {
@@ -16,7 +17,22 @@
 				datecolor: "000000",
 				bordercolor: "E0E0E0"
 			};
-			function getAllChats(){
+
+			blackSettings = {
+				bgcolor: "000000",
+				bgop: 100,
+				iconcolor: "ffffff",
+				chatcolor: "ffffff",
+				msgbgcolor: "000000",
+				msgcolor: "ffffff",
+				inputbgcolor: "000000",
+				inputcolor: "ffffff",
+				datecolor: "ffffff",
+				bordercolor: "202020"
+			};
+	
+	
+function getAllChats(){
 				return document.querySelectorAll("div#chats > div");
 			}
 			function setCookie(name, value, expires){
@@ -52,38 +68,35 @@
 				}
 			}
 			function init(){
-				loadConfig();
+				
 				var url = window.location.href;
 				var rawData = url.split("?");
 				//this needs to be an array because rp fucks need the same chat more than once
 				var chats = [];
-				//?chat1&bgcolor=
+
 				if (rawData.length === 1){
 					alert("Fatal Error: No chats provided, please add a chat to the url, for ex. "+url+"?examplegroup");
 					return false;
 				}
 				var chatData = rawData[1].split(",");
 				for (var i of chatData){
-					var chatVars = i.split("&");
+					//console.log(i);
 					var chatname = null;
 					var options = {};
-					for (var index in chatVars){
-						var d = chatVars[index];
-						var a = d.split("=");
-						if (index == 0){
-							chatname = d;
-						}
-						else{
-							if (a.length === 1){
-								continue;
-							}
-							else{
-								options[a[0]] = a.slice(1).join("=");
-							}
-						}
+
+					if (i.includes("!")){
+						var chatVars = i.split("!");
+						chatname = chatVars[0];
+						option = defaultSettings;
 					}
-					chats.push([chatname,options]);
+					else{
+						chatname = i;
+						options = blackSettings
+					}
+					
+					chats.push([chatname, options]);
 				}
+				console.log(chats);
 				for (let chat of chats){
 					var c = new Chat(chat[0],chat[1]);
 					addChat(c);
@@ -93,12 +106,6 @@
 				document.getElementById("chats").appendChild(c);
 				console.log("Loaded "+c.name);
 				document.title = "Multichat["+getAllChats().length+"]";
-			}
-			function saveSettings(settingsWindow){
-				//end
-				
-				//setCookie("config", JSON.stringify(settings));
-				settingsWindow.close();
 			}
 			function globalSettingsWindow(){
 				function makeButtonPair(id, name, dValue){
