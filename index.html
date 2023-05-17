@@ -87,11 +87,11 @@ function getAllChats(){
 					if (i.includes("!")){
 						var chatVars = i.split("!");
 						chatname = chatVars[0];
-						option = defaultSettings;
+						option = blackSettings;
 					}
 					else{
 						chatname = i;
-						options = blackSettings
+						options = defaultSettings
 					}
 					
 					chats.push([chatname, options]);
