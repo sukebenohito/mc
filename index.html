@@ -1,0 +1,219 @@
+<html>
+	<head>
+		<title>Multichat[?]</title>
+		<script>
+			//10 digits
+			baseIndex = 0;
+			defaultSettings = {
+				bgcolor: "000066",
+				bgop: 100,
+				iconcolor: "ffffff",
+				chatcolor: "ffffff",
+				msgbgcolor: "ffffff",
+				msgcolor: "000000",
+				inputbgcolor: "ffffff",
+				inputcolor: "000000",
+				datecolor: "000066",
+				bordercolor: "000066"
+			};
+			function getAllChats(){
+				return document.querySelectorAll("div#chats > div");
+			}
+			function setCookie(name, value, expires){
+				expires = expires || new Date(new Date().getTime()+(1000*60*60*24*30));
+				expires = "expires="+expires.toUTCString();
+				document.cookie = name+"="+value+";"+expires+";path=\/";
+				return true;
+			}
+			function getCookie(name){
+				name = name || false;
+				var cookie = document.cookie;
+				cookie = cookie.split(/;\s+/g);
+				var data = {};
+				for (var c of cookie){
+					data[c.split("=")[0]] = c.split("=").slice(1).join("=");
+				}
+				if (name){
+					return (data[name] || false);
+				}
+				else{
+					return data;
+				}
+			}
+			function deleteCookie(name){
+				setCookie(name, false, 0);
+				return true;
+			}
+			function loadConfig(){
+				var s = getCookie("config");
+				s = JSON.parse(s);
+				for (var c in s){
+					defaultSettings[c] = s[c];
+				}
+			}
+			function init(){
+				loadConfig();
+				var url = window.location.href;
+				var rawData = url.split("?");
+				//this needs to be an array because rp fucks need the same chat more than once
+				var chats = [];
+				//?chat1&bgcolor=
+				if (rawData.length === 1){
+					alert("Fatal Error: No chats provided, please add a chat to the url, for ex. "+url+"?examplegroup");
+					return false;
+				}
+				var chatData = rawData[1].split(",");
+				for (var i of chatData){
+					var chatVars = i.split("&");
+					var chatname = null;
+					var options = {};
+					for (var index in chatVars){
+						var d = chatVars[index];
+						var a = d.split("=");
+						if (index == 0){
+							chatname = d;
+						}
+						else{
+							if (a.length === 1){
+								continue;
+							}
+							else{
+								options[a[0]] = a.slice(1).join("=");
+							}
+						}
+					}
+					chats.push([chatname,options]);
+				}
+				for (let chat of chats){
+					var c = new Chat(chat[0],chat[1]);
+					addChat(c);
+				}
+			}
+			function addChat(c){
+				document.getElementById("chats").appendChild(c);
+				console.log("Loaded "+c.name);
+				document.title = "Multichat["+getAllChats().length+"]";
+			}
+			function saveSettings(settingsWindow){
+				//end
+				
+				//setCookie("config", JSON.stringify(settings));
+				settingsWindow.close();
+			}
+			function globalSettingsWindow(){
+				function makeButtonPair(id, name, dValue){
+
+				}
+				function makeTextPair(id, name, dValue){
+					var container = document.createElement("div");
+					var label = document.createElement("label");
+					label.innerHTML = name+": ";
+					var box = document.createElement("input");
+					box.setAttribute("type", "text");
+					box.placeholder = dValue;
+					container.appendChild(label);
+					container.appendChild(box);
+					return container;
+				}
+				var settingsWindow = document.open("", "newwindow","width=300,height=300");
+				var settingsForm = document.createElement("form");
+				var settingsBox = document.createElement("div");
+				var toggleBox = document.createElement("div");
+				var colorBox = document.createElement("div");
+				colorBox.appendChild(makeTextPair("msgcolor", "Message Color", defaultSettings.msgcolor));
+				var submitButton = document.createElement("input");
+				submitButton.setAttribute("type", "button");
+				submitButton.value = "Save";
+				settingsForm.appendChild(colorBox);
+				settingsForm.appendChild(submitButton);
+				settingsWindow.document.write("<html><body><\/body><\/html>");
+				settingsWindow.document.body.appendChild(settingsForm);
+			}
+			function fetchCurrentIndex(base){
+				base = base || baseIndex;
+				if (baseIndex === base){
+					baseIndex++;
+				}
+				base = base.toString();
+				//detect amount of digits
+				var baseDigits = base.length;
+				if (baseDigits > 10){
+					throw new Error("unable to create chat, index provided is larger than chatango standards");
+				}
+				while (base.length != 10){
+					base = "0"+base;
+				}
+
+				return "cid"+base;
+			}
+			function Chat(chatname, options){
+				//returns chat object
+				options = options || {};
+				var element = null;
+				var container = document.createElement("div");
+				container.style.minHeight = "350px";
+				container.style.height = "auto";
+				container.style.width = "auto";
+				container.style.minWidth = "250px";
+				container.style.display = "table-cell";
+				if (options.mode === "pm"){
+					element = document.createElement("iframe");
+					element.setAttribute("sandbox","allow-scripts allow-same-origin");
+					element.src = "http://"+chatname+".chatango.com?js&m";
+					console.log("Warning: mode PM is incredibly finicky as it is more of a hack, if it doesnt work logout in a chat then log back in again to refresh your session cookie");
+				}
+				else if (options.mode === "legacy"){
+					element = document.createElement("iframe");
+					element.src = "http://"+chatname+".chatango.com/?flash";
+					console.log("Warning: "+chatname+" is running in legacy flash mode, be aware the flash chat is deprecated and is now insecure USE AT YOUR OWN RISK");
+				}
+				else{
+					//menu bar
+					var menu = document.createElement("div");
+					menu.style.backgroundColor = "grey";
+
+					element = document.createElement("script");
+					element.setAttribute("id",fetchCurrentIndex());
+					element.setAttribute("data-cfasync", "false");
+					element.setAttribute("async", "true");
+					element.setAttribute("src", "http://st.chatango.com/js/gz/emb.js");
+					var dat = {
+						handle:chatname,
+						arch:"js",
+						styles:{
+							a: options.bgcolor || defaultSettings.bgcolor,
+							b: options.bgop || defaultSettings.bgop,
+							c: options.iconcolor || defaultSettings.iconcolor,
+							d: options.chatcolor || defaultSettings.chatcolor,
+							e: options.msgbgcolor || defaultSettings.msgbgcolor,
+							g: options.msgcolor || defaultSettings.msgcolor,
+							h: options.inputbgcolor || options.msgbgcolor || defaultSettings.inputbgcolor,
+							j: options.inputcolor || options.msgcolor || defaultSettings.inputcolor,
+							k: options.datecolor || options.msgcolor || defaultSettings.datecolor,
+							l: options.bordercolor || defaultSettings.bordercolor,
+							m: options.bgcolor || "000066",
+							n: options.bgcolor || "000066",
+							p: options.fontsize || 10,
+							q: options.bgcolor || "000066",
+							w: options.omsg || 1,
+							ab: options.styles || 1
+						}
+					};
+					//failsafes
+					dat.styles.b = Number(dat.styles.b);
+					dat.styles.p = Number(dat.styles.p);
+					dat.styles.w = Number(dat.styles.w);
+					element.innerHTML = JSON.stringify(dat);
+				}
+				element.name = chatname;
+				element.style.height = "100%";
+				element.style.width = "100%";
+				container.appendChild(element);
+				return container;
+			}
+		</script>
+	</head>
+	<body onload=init()>
+		<div id="chats" style="height:100%;width:100%;display:table;white-space: nowrap"></div>
+	</body>
+</html>
