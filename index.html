@@ -159,12 +159,12 @@
 				if (options.mode === "pm"){
 					element = document.createElement("iframe");
 					element.setAttribute("sandbox","allow-scripts allow-same-origin");
-					element.src = "http://"+chatname+".chatango.com?js&m";
+					element.src = "https://"+chatname+".chatango.com?js&m";
 					console.log("Warning: mode PM is incredibly finicky as it is more of a hack, if it doesnt work logout in a chat then log back in again to refresh your session cookie");
 				}
 				else if (options.mode === "legacy"){
 					element = document.createElement("iframe");
-					element.src = "http://"+chatname+".chatango.com/?flash";
+					element.src = "https://"+chatname+".chatango.com/?flash";
 					console.log("Warning: "+chatname+" is running in legacy flash mode, be aware the flash chat is deprecated and is now insecure USE AT YOUR OWN RISK");
 				}
 				else{
@@ -176,7 +176,7 @@
 					element.setAttribute("id",fetchCurrentIndex());
 					element.setAttribute("data-cfasync", "false");
 					element.setAttribute("async", "true");
-					element.setAttribute("src", "http://st.chatango.com/js/gz/emb.js");
+					element.setAttribute("src", "https://st.chatango.com/js/gz/emb.js");
 					var dat = {
 						handle:chatname,
 						arch:"js",
