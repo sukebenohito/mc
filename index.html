@@ -23,12 +23,25 @@
 				bgop: 100,
 				iconcolor: "ffffff",
 				chatcolor: "ffffff",
-				msgbgcolor: "C0C0C0",
+				msgbgcolor: "404040",
 				msgcolor: "ffffff",
-				inputbgcolor: "C0C0C0",
+				inputbgcolor: "404040",
 				inputcolor: "ffffff",
 				datecolor: "000000",
 				bordercolor: "202020"
+			};
+			
+			graySettings = {
+				bgcolor: "404040",
+				bgop: 100,
+				iconcolor: "c0c0c0",
+				chatcolor: "c0c0c0",
+				msgbgcolor: "c0c0c0",
+				msgcolor: "990000",
+				inputbgcolor: "404040",
+				inputcolor: "ffffff",
+				datecolor: "404040",
+				bordercolor: "404040"
 			};
 	
 	
@@ -87,7 +100,7 @@ function getAllChats(){
 					if (i.includes("!")){
 						var chatVars = i.split("!");
 						chatname = chatVars[0];
-						options = blackSettings;
+						options = graySettings;
 					}
 					else{
 						chatname = i;
