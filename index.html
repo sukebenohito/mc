@@ -39,9 +39,10 @@
 				msgbgcolor: "c0c0c0",
 				msgcolor: "990000",
 				inputbgcolor: "c0c0c0",
-				inputcolor: "ffffff",
+				inputcolor: "000000",
 				datecolor: "404040",
-				bordercolor: "404040"
+				bordercolor: "404040",
+				scrollbar: "404040"
 			};
 	
 	
@@ -96,11 +97,16 @@ function getAllChats(){
 					//console.log(i);
 					var chatname = null;
 					var options = {};
-
+					var chatVars = null;
 					if (i.includes("!")){
-						var chatVars = i.split("!");
+						chatVars = i.split("!");
 						chatname = chatVars[0];
 						options = graySettings;
+					}
+					else if (i.includes("$")){
+						chatVars = i.split("$");
+						chatname = chatVars[0];
+						options = blackSettings
 					}
 					else{
 						chatname = i;
@@ -216,7 +222,8 @@ function getAllChats(){
 							p: options.fontsize || 10,
 							q: options.bgcolor || "ffffff",
 							w: options.omsg || 1,
-							ab: options.styles || 1
+							ab: options.styles || 1,
+							sbc: options.scrollbar || "A0A0A0"
 						}
 					};
 					//failsafes
