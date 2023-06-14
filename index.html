@@ -1,5 +1,9 @@
 <html>
 	<head>
+		<!-- <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimal-ui"/> -->
+		<!--<meta name="apple-mobile-web-app-capable" content="yes" /> -->
+		<!--<meta name="mobile-web-app-capable" content="yes" /> -->
+		
 		<title>Multichat[?]</title>
 		<script>
 			//original code from https://2pichubros.com/
@@ -202,7 +206,7 @@ function getAllChats(){
 					element.setAttribute("id",fetchCurrentIndex());
 					element.setAttribute("data-cfasync", "false");
 					element.setAttribute("async", "true");
-					element.setAttribute("src", "//st.chatango.com/js/gz/emb_fullsize.js");
+					element.setAttribute("src", "https://st.chatango.com/js/gz/emb.js");
 					var dat = {
 						handle:chatname,
 						arch:"js",
