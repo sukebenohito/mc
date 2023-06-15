@@ -181,10 +181,10 @@ function getAllChats(){
 				options = options || {};
 				var element = null;
 				var container = document.createElement("div");
-				container.style.minHeight = "350px";
+				container.style.minHeight = "300px";
 				container.style.height = "auto";
 				container.style.width = "auto";
-				container.style.minWidth = "250px";
+				container.style.minWidth = "200px";
 				container.style.display = "table-cell";
 				if (options.mode === "pm"){
 					element = document.createElement("iframe");
@@ -228,7 +228,8 @@ function getAllChats(){
 							w: options.omsg || 1,
 							ab: options.styles || 1,
 							sbc: options.scrollbar || "A0A0A0",
-							surl: 0
+							surl: 0,
+							fwtickm: 1
 						}
 					};
 					//failsafes
