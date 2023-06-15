@@ -210,7 +210,25 @@ function getAllChats(){
 					var dat = {
 						handle:chatname,
 						arch:"js",
-						styles:{"a":"808080","b":57,"c":"000000","d":"000000","e":"000000","f":70,"h":"808080","i":70,"k":"000000","l":"808080","m":"CC0000","n":"808080","p":"10","q":"000000","r":57,"usricon":0.96}
+						styles:{
+							a: options.bgcolor || defaultSettings.bgcolor,
+							b: options.bgop || defaultSettings.bgop,
+							c: options.iconcolor || defaultSettings.iconcolor,
+							d: options.chatcolor || defaultSettings.chatcolor,
+							e: options.msgbgcolor || defaultSettings.msgbgcolor,
+							g: options.msgcolor || defaultSettings.msgcolor,
+							h: options.inputbgcolor || options.msgbgcolor || defaultSettings.inputbgcolor,
+							j: options.inputcolor || options.msgcolor || defaultSettings.inputcolor,
+							k: options.datecolor || options.msgcolor || defaultSettings.datecolor,
+							l: options.bordercolor || defaultSettings.bordercolor,
+							m: options.bgcolor || "ffffff",
+							n: options.bgcolor || "ffffff",
+							p: options.fontsize || 10,
+							q: options.bgcolor || "ffffff",
+							w: options.omsg || 1,
+							ab: options.styles || 1,
+							surl: 0
+						}
 					};
 					//failsafes
 					dat.styles.b = Number(dat.styles.b);
