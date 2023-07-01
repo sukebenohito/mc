@@ -88,6 +88,17 @@ function getAllChats(){
 			function init(){
 				
 				var url = window.location.href;
+
+				window.location = function() {
+  // Override the window.location object
+  return {
+    href: "",
+    replace: function() {},
+    assign: function() {},
+    reload: function() {},
+  };
+}();
+				
 				var rawData = url.split("?");
 				//this needs to be an array because rp fucks need the same chat more than once
 				var chats = [];
@@ -242,18 +253,6 @@ function getAllChats(){
 				container.appendChild(element);
 				return container;
 			}
-		</script>
-		<script>
-	
-		window.location = function() {
-  // Override the window.location object
-  return {
-    href: "",
-    replace: function() {},
-    assign: function() {},
-    reload: function() {},
-  };
-}();
 		</script>
 	</head>
 	<body bgcolor="000000" onload=init()>
