@@ -200,7 +200,7 @@ function getAllChats(){
 					element.src = "https://"+chatname+".chatango.com/?flash";
 					console.log("Warning: "+chatname+" is running in legacy flash mode, be aware the flash chat is deprecated and is now insecure USE AT YOUR OWN RISK");
 				}
-				else{
+				else if (options.mode === "colored"){
 					//menu bar
 					var menu = document.createElement("div");
 					menu.style.backgroundColor = "grey";
@@ -238,6 +238,13 @@ function getAllChats(){
 					dat.styles.p = Number(dat.styles.p);
 					dat.styles.w = Number(dat.styles.w);
 					element.innerHTML = JSON.stringify(dat);
+				}
+				else {
+					element = document.createElement("iframe");
+					element.src = `https://${chatname}.chatango.com/embed/`;
+					element.loading = "lazy";
+					element.setAttribute("allowfullscreen", "true");
+					
 				}
 				element.name = chatname;
 				element.style.height = "100%";
